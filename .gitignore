@@ -1,0 +1,24 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.VC.db
+*.VC.opendb
+ipch/
+
+# Build output
+build/
+x64/
+ARM64/
+Debug/
+Release/
+*.obj
+*.pdb
+*.tlog
+*.log
+
+# Driver packages and signing material (private keys never go into the repo)
+*.cer
+*.pfx
+*.pvk
+*.cat

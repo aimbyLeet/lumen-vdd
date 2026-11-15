@@ -1,0 +1,79 @@
+;
+; lumen_vdd.inf - Lumen VDD virtual display adapter (IddCx, UMDF 2)
+;
+; Root-enumerated device Root\LumenVdd. Windows 10 1903 (IddCx 1.4) and later.
+;
+
+[Version]
+PnpLockdown=1
+Signature="$Windows NT$"
+ClassGUID={4d36e968-e325-11ce-bfc1-08002be10318}
+Class=Display
+ClassVer=2.0
+Provider=%Provider%
+CatalogFile=lumen_vdd.cat
+DriverVer=
+
+[Manufacturer]
+%Provider%=Lumen,NT$ARCH$.10.0...18362
+
+[Lumen.NT$ARCH$.10.0...18362]
+%DeviceDesc%=LumenVdd_Install, Root\LumenVdd
+
+[SourceDisksNames]
+1=%DiskName%
+
+[SourceDisksFiles]
+lumen_vdd.dll=1
+
+; Run from the driver store: each driver version gets its own folder, so an update does not hit a DLL in use.
+[DestinationDirs]
+LumenVdd_CopyFiles=13
+
+[LumenVdd_CopyFiles]
+lumen_vdd.dll
+
+; The UMDF reflector's service is declared here, not taken from the system's WUDFRD.inf
+; (Include/Needs): some Windows 10 machines have no WUDFRD.inf, and the device then got no
+; function driver (0xE0000219, seen on a Windows 10 22H2 machine 2026-10-30). Its sections
+; WUDFRD.NT and WUDFRD.NT.HW are empty; WUDFRD.NT.Services is the AddService below.
+[LumenVdd_Install.NT]
+CopyFiles=LumenVdd_CopyFiles
+
+[LumenVdd_Install.NT.hw]
+AddReg=LumenVdd_HwAddReg
+
+[LumenVdd_HwAddReg]
+HKR,,"UpperFilters",%REG_MULTI_SZ%,"IndirectKmd"
+; Own driver host process: a problem in Lumen VDD does not take other UMDF drivers down.
+HKR,"WUDF","DeviceGroupId",%REG_SZ%,"LumenVddGroup"
+; Only SYSTEM and Administrators may open the device.
+HKR,,"Security",,"D:P(A;;GA;;;SY)(A;;GA;;;BA)"
+
+[LumenVdd_Install.NT.Services]
+AddService=WUDFRd,0x000001fa,WUDFRD_ServiceInstall
+
+[WUDFRD_ServiceInstall]
+DisplayName=%WudfRdDisplayName%
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%12%\WUDFRd.sys
+
+[LumenVdd_Install.NT.Wdf]
+UmdfService=LumenVdd,LumenVdd_UmdfService
+UmdfServiceOrder=LumenVdd
+UmdfKernelModeClientPolicy=AllowKernelModeClients
+
+[LumenVdd_UmdfService]
+UmdfLibraryVersion=$UMDFVERSION$
+ServiceBinary=%13%\lumen_vdd.dll
+UmdfExtensions=IddCx0102
+
+[Strings]
+Provider="Lumen"
+DeviceDesc="Lumen Virtual Display Adapter"
+DiskName="Lumen VDD Installation Disk"
+REG_MULTI_SZ=0x00010000
+REG_SZ=0x00000000
+WudfRdDisplayName="Windows Driver Foundation - User-mode Driver Framework Reflector"
