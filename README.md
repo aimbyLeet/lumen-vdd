@@ -156,6 +156,21 @@ The interface has its own version, separate from the driver's. A minor version o
 | `tools/lumen-vdd-ctl/` | Manual control for testing. |
 | `scripts/` | `build.ps1` (build + sign), `sign.ps1` (signing only), `package.ps1` (release archive). |
 
+## Support the project
+
+Lumen VDD is free. If it is useful to you and you want to support its development, donations in crypto are welcome.
+Send only in the network given for the address — coins sent in another network can be lost.
+
+| Network | What to send | Address |
+|---|---|---|
+| Bitcoin | BTC | `bc1qex7hgmd95qwrym00m57krx7ykgllskcwyv6uyc` |
+| Tron (TRC-20) | USDT, TRX | `TBR3WAEv8zwesDNNttvb3jobKafdhAWdKb` |
+| BNB Smart Chain (BEP-20) | USDT, BNB | `0xAA41D700De7A3625A779FD6D3aE4dfEca1379B87` |
+| Solana | SOL, USDT, USDC | `GgvF3KJJQXJ76xzu1pQ6yWATE6DYabNWNcEoxRXPuUuV` |
+| TON | TON, USDT | `UQD1uRU9MxmweO-ROHWo4kZxkYVFj4j8V1eTsicn_iYThlSb` |
+
+Thank you!
+
 ## License
 
 MIT, see [LICENSE-MIT](LICENSE-MIT).
